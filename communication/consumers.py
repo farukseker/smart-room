@@ -29,8 +29,10 @@ class CommunicationConsumer(WebsocketConsumer):
 
     # Receive message from WebSocket
     def receive(self,*args,**kwargs):
+        print(args,kwargs)
         async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name, {"type": "communication_message", "message": args[0]}
+            # self.room_group_name, {"type": "communication_message", "message": args[0]}
+            self.room_group_name, {"type": "communication_message", "message": "True"}
         )
 
     # Receive message from room group
@@ -38,3 +40,6 @@ class CommunicationConsumer(WebsocketConsumer):
         message = event["message"]
         # Send message to WebSocket
         self.send(text_data=json.dumps({"message": message}))
+
+    def send_hello_esp(self):
+        self.send(text_data=json.dumps({"message":"hi ESP!"}))

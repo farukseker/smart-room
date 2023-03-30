@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-q7!599o-3+e61!-z#wjm8&r-8nexe-x@1i(e_3jq)*2r2*50hl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+]+[
+    'esp',
 ]
 
 MIDDLEWARE = [
@@ -85,8 +87,6 @@ DATABASES = {
     }
 }
 
-
-print(env('REDIS_CHANEL_URL'))
 
 CHANNEL_LAYERS = {
     "default": {
@@ -134,6 +134,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
