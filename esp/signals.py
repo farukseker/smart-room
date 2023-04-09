@@ -8,14 +8,14 @@ from esp.models import ESP
 
 @receiver(post_save, sender=Key)
 def send_message_to_socket(sender, instance, **kwargs):
-    ESP.objects.get(keys__in=instance)
-    # channel_layer = get_channel_layer()
-    # print("esp ad")
-    # async_to_sync(channel_layer.group_send)(
-    #     "communication_b2c4b984-dd3b-4a66-9731-67754cc19fd1",
-    #     {
-    #         "type": "key_status",
-    #         # "message": json.dumps({"status":instance.current})
-    #         "status": "argos"
-    #     }
-    # )
+    is_create_signal = kwargs.get("created")
+    if not is_create_signal and not instance.last_updater_is_esp:
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "communication_%s" % instance.owner_esp.esp_id,
+            {
+                "type": "key_status",
+                "pin": instance.pin_name,
+                "status":instance.current
+            }
+        )

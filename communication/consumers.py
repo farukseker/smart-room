@@ -24,9 +24,7 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
             pass
 
     async def connect(self):
-        print("connnect talp edildi".upper())
         user = self.scope["user"]
-        print(self)
         # print(self.scope["url_route"]["kwargs"])
 
         esp_id = self.scope['url_route']['kwargs'].get("esp_id",None)
@@ -40,11 +38,10 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
                 self.room_group_name, self.channel_name
             )
 
-
-
             await self.accept()
         else:
             raise DenyConnection
+
     async def disconnect(self, close_code):
         # Leave room group
         await self.channel_layer.group_discard(
@@ -54,11 +51,17 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self,*args,**kwargs):
         print(args,kwargs)
-        __type = kwargs.get('type',None)
-
+        data = kwargs
+        data_type = kwargs.get('text_data',None)
+        if data_type:
+            data = data_type
+        # await self.channel_layer.group_send(
+        #     # self.room_group_name, {"type": "communication_message", "message": args[0]}
+        #     self.room_group_name, {"type": "set_master_key","pin":"LAMBA_PIN", "status": True}
+        # )
         await self.channel_layer.group_send(
             # self.room_group_name, {"type": "communication_message", "message": args[0]}
-            self.room_group_name, {"type": "set_master_key","pin":"LAMBA_PIN", "status": True}
+            self.room_group_name, kwargs
         )
 
     # Receive message from room group
@@ -70,13 +73,17 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
     async def send_hello_esp(self):
         await self.send(text_data=json.dumps({"message":"hi ESP!"}))
 
-
     async def key_status(self,*args,**kwargs):
-        print("key statusssss".upper())
+        __dict = args[0]
+        pin = __dict.get("pin",None)
+        status = __dict.get("status",None)
+        if pin != None and status != None:
+            await self.send(text_data=json.dumps({"type": "key_update","pin":pin,"status":status}))
 
     @database_sync_to_async
     def set_master_key(self,*args,**kwargs):
         print("geldiii ****")
+        print(args,kwargs)
         try:
             esp_device = self.get_esp_device()
             key = esp_device.keys.get(pin_name="D3")

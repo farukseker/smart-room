@@ -6,7 +6,7 @@ import uuid
 
 class ESP(models.Model):
     name = models.TextField()
-    esp_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    esp_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     api_key = models.UUIDField(default=uuid.uuid4, editable=True)
     keys = models.ManyToManyField("Key",blank=True,default=None)
     def __str__(self):
