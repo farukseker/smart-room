@@ -28,8 +28,10 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
         # print(self.scope["url_route"]["kwargs"])
 
         esp_id = self.scope['url_route']['kwargs'].get("esp_id",None)
+        print("concet")
 
-        vid = self.verify_esp_id(esp_id)
+        vid = await self.verify_esp_id(esp_id)
+        print(vid)
         if vid:
             self.room_name = esp_id
             self.room_group_name = "communication_%s" % self.room_name
@@ -51,18 +53,16 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self,*args,**kwargs):
         print(args,kwargs)
-        data = kwargs
-        data_type = kwargs.get('text_data',None)
-        if data_type:
-            data = data_type
-        # await self.channel_layer.group_send(
-        #     # self.room_group_name, {"type": "communication_message", "message": args[0]}
-        #     self.room_group_name, {"type": "set_master_key","pin":"LAMBA_PIN", "status": True}
-        # )
+
+
         await self.channel_layer.group_send(
             # self.room_group_name, {"type": "communication_message", "message": args[0]}
-            self.room_group_name, kwargs
+            self.room_group_name, {"type": "set_master_key","pin":"LAMBA_PIN", "status": True}
         )
+        # await self.channel_layer.group_send(
+        #     # self.room_group_name, {"type": "communication_message", "message": args[0]}
+        #     self.room_group_name, kwargs
+        # )
 
     # Receive message from room group
     async def communication_message(self, event):
@@ -82,8 +82,6 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def set_master_key(self,*args,**kwargs):
-        print("geldiii ****")
-        print(args,kwargs)
         try:
             esp_device = self.get_esp_device()
             key = esp_device.keys.get(pin_name="D3")
