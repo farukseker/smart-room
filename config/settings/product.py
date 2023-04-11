@@ -1,6 +1,8 @@
 from .base_settings import *
 
 
+CSRF_TRUSTED_ORIGINS = ['https://*.up.railway.app']
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
