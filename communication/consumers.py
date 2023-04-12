@@ -24,14 +24,9 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
             pass
 
     async def connect(self):
-        user = self.scope["user"]
-        # print(self.scope["url_route"]["kwargs"])
-
+        # user = self.scope["user"]
         esp_id = self.scope['url_route']['kwargs'].get("esp_id",None)
-        print("concet")
-
         vid = await self.verify_esp_id(esp_id)
-        print(vid)
         if vid:
             self.room_name = esp_id
             self.room_group_name = "communication_%s" % self.room_name
@@ -80,16 +75,23 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
         if pin != None and status != None:
             await self.send(text_data=json.dumps({"type": "key_update","pin":pin,"status":status}))
 
+    async def key_status_update_from_esp(self,*args,**kwargs):
+        __dict = args[0]
+        pin = __dict.get("pin",None)
+        status = __dict.get("status",None)
+        if pin != None and status != None:
+            await self.send(text_data=json.dumps({"type": "key_update","pin":pin,"status":status}))
+
     @database_sync_to_async
     def set_master_key(self,*args,**kwargs):
         try:
             esp_device = self.get_esp_device()
             key = esp_device.keys.get(pin_name="D3")
-            key.last_updater_is_esp = True
+            # key.last_updater_is_esp = True
             key.current = False
             key.save()
         except:
             pass
-            # errlog alert type crtical
+            # @errlog alert type crt*2
         # await self.send(text_data=json.dumps(kwargs))
 

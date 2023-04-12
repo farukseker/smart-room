@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from esp.models import Key
 from esp.models import ESP
 
+
 @receiver(post_save, sender=Key)
 def send_message_to_socket(sender, instance, **kwargs):
     is_create_signal = kwargs.get("created")
