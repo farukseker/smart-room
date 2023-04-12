@@ -14,11 +14,11 @@ def github_commit():
 
 def migrate_for_server():
     print('Makemigrations Start')
-    os.system('python manage.py makemigrations --settings config.settings')
+    os.system('python manage.py makemigrations --settings config.settings.product')
     print('Makemigrations Finished')
     time.sleep(2)
     print('Migrate Start')
-    os.system('python manage.py migrate --settings config.settings')
+    os.system('python manage.py migrate --settings config.settings.product')
     print('migrate Finished')
 
 def wait_railway():
