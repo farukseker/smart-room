@@ -20,3 +20,4 @@ def send_message_to_socket(sender, instance, **kwargs):
                 "status":instance.current
             }
         )
+        # async_to_sync(channel_layer.disconnect)()

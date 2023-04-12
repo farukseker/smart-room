@@ -9,6 +9,7 @@ class ESP(models.Model):
     esp_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     api_key = models.UUIDField(default=uuid.uuid4, editable=True)
     keys = models.ManyToManyField("Key",blank=True,default=None)
+
     def __str__(self):
         return f"{self.name}|{self.esp_id}"
 
@@ -19,3 +20,6 @@ class Key(models.Model):
     name = models.TextField()
     current = models.BooleanField(default=False)
     last_updater_is_esp = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"key : {self.name}|{self.pin_name} @ {self.owner_esp}"
