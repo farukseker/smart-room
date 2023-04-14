@@ -9,6 +9,9 @@ from esp.models import Key
 
 class CommunicationConsumer(AsyncJsonWebsocketConsumer):
 
+
+
+
     @database_sync_to_async
     def verify_esp_id(self,id):
         try:
@@ -17,6 +20,7 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
         except:
             pass
 
+    @database_sync_to_async
     def get_esp_device(self):
         try:
             return ESP.objects.get(esp_id=self.room_name)
@@ -27,6 +31,7 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
         # user = self.scope["user"]
         esp_id = self.scope['url_route']['kwargs'].get("esp_id",None)
         vid = await self.verify_esp_id(esp_id)
+        print(vid)
         if vid:
             self.room_name = esp_id
             self.room_group_name = "communication_%s" % self.room_name
@@ -36,6 +41,7 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
             )
 
             await self.accept()
+
         else:
             raise DenyConnection
 
@@ -84,8 +90,10 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def set_master_key(self,*args,**kwargs):
+        print("set master key")
         try:
-            esp_device = self.get_esp_device()
+
+            esp_device = async_to_sync(self.get_esp_device())()
             key = esp_device.keys.get(pin_name="D3")
             # key.last_updater_is_esp = True
             key.current = False
