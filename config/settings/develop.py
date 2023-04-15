@@ -23,7 +23,7 @@ CHANNEL_LAYERS = {
 }
 
 
-
 STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+

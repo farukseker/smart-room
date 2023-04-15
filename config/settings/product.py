@@ -1,7 +1,7 @@
 from .base_settings import *
 
 
-CSRF_TRUSTED_ORIGINS = ['https://*.up.railway.app',"https://smart-room-production.up.railway.app/","http://192.168.0.103"]
+CSRF_TRUSTED_ORIGINS = ['https://*.up.railway.app',"https://smart-room-production.up.railway.app/"]
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

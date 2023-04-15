@@ -1,4 +1,5 @@
 import json
+import time
 
 from asgiref.sync import async_to_sync,sync_to_async
 from channels.generic.websocket import WebsocketConsumer,AsyncJsonWebsocketConsumer
@@ -6,6 +7,8 @@ from channels.db import SyncToAsync,database_sync_to_async,DatabaseSyncToAsync
 from channels.exceptions import DenyConnection,RequestAborted
 from esp.models import ESP
 from esp.models import Key
+import asyncio
+
 
 class CommunicationConsumer(AsyncJsonWebsocketConsumer):
 
@@ -30,20 +33,19 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self):
         # user = self.scope["user"]
         esp_id = self.scope['url_route']['kwargs'].get("esp_id",None)
-        vid = await self.verify_esp_id(esp_id)
-        print(vid)
-        if vid:
-            self.room_name = esp_id
-            self.room_group_name = "communication_%s" % self.room_name
+        # vid = await self.verify_esp_id(esp_id)
 
-            await self.channel_layer.group_add(
-                self.room_group_name, self.channel_name
-            )
+        self.room_name = esp_id
+        self.room_group_name = "communication_%s" % self.room_name
 
-            await self.accept()
+        await self.channel_layer.group_add(
+            self.room_group_name, self.channel_name
+        )
 
-        else:
-            raise DenyConnection
+        await self.accept()
+
+    # else:
+    #     raise DenyConnection
 
     async def disconnect(self, close_code):
         # Leave room group
