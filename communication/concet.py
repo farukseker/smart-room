@@ -10,7 +10,7 @@ from esp.models import Key
 import asyncio
 
 
-class CommunicationConsumer(AsyncJsonWebsocketConsumer):
+class CommunicationConsumer(WebsocketConsumer):
 
 
 
@@ -30,11 +30,10 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
         except:
             pass
 
-    async def connect(self):
+    def connect(self):
         # user = self.scope["user"]
         esp_id = self.scope['url_route']['kwargs'].get("esp_id",None)
         # vid = await self.verify_esp_id(esp_id)
-
         self.room_name = esp_id
         self.room_group_name = "communication_%s" % self.room_name
 
@@ -47,14 +46,15 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
     # else:
     #     raise DenyConnection
 
-    async def disconnect(self, close_code):
+    def disconnect(self, close_code):
+        print(close_code)
         # Leave room group
         await self.channel_layer.group_discard(
             self.room_group_name, self.channel_name
         )
 
     # Receive message from WebSocket
-    async def receive(self,*args,**kwargs):
+    def receive(self,*args,**kwargs):
         print(args,kwargs)
 
 
@@ -68,22 +68,22 @@ class CommunicationConsumer(AsyncJsonWebsocketConsumer):
         # )
 
     # Receive message from room group
-    async def communication_message(self, event):
+    def communication_message(self, event):
         message = event["message"]
         # Send message to WebSocket
         await self.send(text_data=json.dumps({"message": message}))
 
-    async def send_hello_esp(self):
+    def send_hello_esp(self):
         await self.send(text_data=json.dumps({"message":"hi ESP!"}))
 
-    async def key_status(self,*args,**kwargs):
+    def key_status(self,*args,**kwargs):
         __dict = args[0]
         pin = __dict.get("pin",None)
         status = __dict.get("status",None)
         if pin != None and status != None:
             await self.send(text_data=json.dumps({"type": "key_update","pin":pin,"status":status}))
 
-    async def key_status_update_from_esp(self,*args,**kwargs):
+    def key_status_update_from_esp(self,*args,**kwargs):
         __dict = args[0]
         pin = __dict.get("pin",None)
         status = __dict.get("status",None)

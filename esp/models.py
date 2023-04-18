@@ -23,3 +23,8 @@ class Key(models.Model):
 
     def __str__(self):
         return f"key : {self.name}|{self.pin_name} @ {self.owner_esp}"
+
+
+class Mood(models.Model):
+    name = models.TextField()
+
