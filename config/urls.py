@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.urls import path
 
 from django.shortcuts import render
@@ -27,8 +27,13 @@ from django.urls import path
 
 @csrf_exempt
 def test_google(request):
-    print(request)
-    return HttpResponse(200)
+    if request.method == "post":
+        return JsonResponse({"status":200})
+    else:
+        return HttpResponse(200)
+
+
+
 
 def mindex(request):
     return render(request,'esp_manage.html')
