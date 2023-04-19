@@ -30,15 +30,15 @@ from django.urls import path
 @csrf_exempt
 @xframe_options_exempt
 def test_google(request):
-    try:
-        key = Key.objects.get(pin_name="LAMBA_PIN")
-        key.current = not key.current
-        key.save()
-    except Exception as e:
-        print(e)
-        pass
-    if request.method == "post":
 
+    if request.method == "POST":
+        try:
+            key = Key.objects.get(pin_name="LAMBA_PIN")
+            key.current = not key.current
+            key.save()
+        except Exception as e:
+            print(e)
+            pass
         return JsonResponse({"status":200})
     else:
         return JsonResponse({"status":200,"markus":"parse"})
