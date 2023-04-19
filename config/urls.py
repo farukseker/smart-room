@@ -21,7 +21,7 @@ from django.shortcuts import render
 
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.clickjacking import xframe_options_exempt
-
+from esp.models import Key
 
 
 from django.urls import path
@@ -31,6 +31,12 @@ from django.urls import path
 @xframe_options_exempt
 def test_google(request):
     if request.method == "post":
+        try:
+            key = Key.objects.get(pin_name="LAMBA_PIN")
+            key.current != key.current
+            key.save()
+        except:
+            pass
         return JsonResponse({"status":200})
     else:
         return HttpResponse(200)
