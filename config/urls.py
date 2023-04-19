@@ -33,9 +33,10 @@ def test_google(request):
     if request.method == "post":
         try:
             key = Key.objects.get(pin_name="LAMBA_PIN")
-            key.current != key.current
+            key.current = not key.current
             key.save()
-        except:
+        except Exception as e:
+            print(e)
             pass
         return JsonResponse({"status":200})
     else:
