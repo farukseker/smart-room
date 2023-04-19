@@ -20,12 +20,15 @@ from django.urls import path
 from django.shortcuts import render
 
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.clickjacking import xframe_options_exempt
+
 
 
 from django.urls import path
 
 
 @csrf_exempt
+@xframe_options_exempt
 def test_google(request):
     if request.method == "post":
         return JsonResponse({"status":200})
