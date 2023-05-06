@@ -28,11 +28,10 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
         except:
             pass
     @database_sync_to_async
-    def set_esp_connect_status(self,status: bool):
-        device = self.get_esp_device()
-        if device:
-            device.is_connected = status
-            device.save()
+    def set_esp_connect_status(self,device,status: bool):
+        device.is_connected = status
+        device.save()
+
     async def connect(self):
         try:
             # user = self.scope["user"]
@@ -46,8 +45,8 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
             )
 
             await self.accept()
-
-            await self.set_esp_connect_status(True)
+            esp_device = await self.get_esp_device()
+            await self.set_esp_connect_status(esp_device,True)
 
         except Exception as er:
             print(er)
@@ -62,7 +61,8 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
             self.room_group_name, self.channel_name
         )
 
-        await self.set_esp_connect_status(False)
+        esp_device = await self.get_esp_device()
+        await self.set_esp_connect_status(esp_device, False)
 
     # Receive message from WebSocket
     async def receive(self,*args,**kwargs):
