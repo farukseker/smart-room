@@ -49,10 +49,11 @@ def test_google(request):
 def mindex(request):
     return render(request,'esp_manage.html')
 
+from esp.views import EspPage
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', mindex),
+    path('', EspPage.as_view()),
     path('api/trunon/',test_google)
 
 ]
