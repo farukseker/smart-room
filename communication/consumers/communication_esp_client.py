@@ -27,7 +27,12 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
             return ESP.objects.get(esp_id=self.room_name)
         except:
             pass
-
+    @database_sync_to_async
+    def set_esp_connect_status(self,status: bool):
+        device = self.get_esp_device()
+        if device:
+            device.is_connected = status
+            device.save()
     async def connect(self):
         try:
             # user = self.scope["user"]
@@ -42,18 +47,23 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
             )
 
             await self.accept()
+
+            await self.set_esp_connect_status(True)
+
         except Exception as er:
             print(er)
+
 
     # else:
     #     raise DenyConnection
 
     async def disconnect(self, close_code):
-        print(close_code)
         # Leave room group
         await self.channel_layer.group_discard(
             self.room_group_name, self.channel_name
         )
+
+        await self.set_esp_connect_status(False)
 
     # Receive message from WebSocket
     async def receive(self,*args,**kwargs):
