@@ -38,7 +38,6 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
             # user = self.scope["user"]
             esp_id = self.scope['url_route']['kwargs'].get("esp_id",None)
             # vid = await self.verify_esp_id(esp_id)
-
             self.room_name = esp_id
             self.room_group_name = "communication_%s" % self.room_name
 
