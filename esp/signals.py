@@ -17,7 +17,7 @@ def send_message_to_socket(sender, instance, **kwargs):
             {
                 "type": "key_status",
                 "pin": instance.pin_name,
-                "status":instance.current
+                "status": instance.current
             }
         )
         # async_to_sync(channel_layer.disconnect)()

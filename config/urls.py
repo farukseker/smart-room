@@ -53,7 +53,7 @@ from esp.views import EspPage
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', EspPage.as_view()),
+    path('', EspPage.as_view(),name="esp_main"),
     path('api/trunon/',test_google)
 
 ]

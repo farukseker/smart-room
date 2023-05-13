@@ -1,10 +1,23 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect,get_object_or_404,get_list_or_404
 from django.views.generic import View,TemplateView,ListView
+from esp.models import ESP,Key
 
 
-class EspPage(TemplateView):
-    template_name = "manage_esp_list.html"
-
+class EspPage(View):
     def get(self,request,*args,**kwargs):
-        return super().get(request)
+        # esp_list = ESP.objects.filter(user=request.user)
+        esp_list = get_list_or_404(ESP,user=request.user)
+        return render(request,template_name="manage_esp_list.html",context={
+            "esp_list": esp_list
+        })
+
+    def post(self,request):
+        query_key_id = request.POST.get("key_id",None)
+        key = get_object_or_404(Key,id=query_key_id)
+        if key:
+            esp_list = ESP.objects.filter(user=request.user)
+            if key.owner_esp in esp_list:
+                key.current = not key.current
+                key.save()
+        return redirect("esp_main")
 

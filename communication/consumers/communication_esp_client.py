@@ -12,7 +12,6 @@ import asyncio
 
 class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
 
-
     @database_sync_to_async
     def verify_esp_id(self,id):
         try:
@@ -27,6 +26,7 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
             return ESP.objects.get(esp_id=self.room_name)
         except:
             pass
+
     @database_sync_to_async
     def set_esp_connect_status(self,device,status: bool):
         device.is_connected = status
