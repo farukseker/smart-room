@@ -27,9 +27,10 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
         except:
             pass
 
-    def set_sync_key_status(self,esp_device: ESP):
-        for keys in esp_device.get_keys():
-            keys.save()
+    @database_sync_to_async
+    def set_sync_key_status(self, esp_device: ESP):
+        for key in esp_device.get_keys():
+            key.save()
 
     @database_sync_to_async
     def set_esp_connect_status(self,device,status: bool):
@@ -51,7 +52,7 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
             await self.accept()
             esp_device = await self.get_esp_device()
             await self.set_esp_connect_status(esp_device,True)
-            self.set_sync_key_status(esp_device)
+            await self.set_sync_key_status(esp_device)
         except Exception as er:
             print(er)
 
