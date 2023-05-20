@@ -1,9 +1,11 @@
 from django.shortcuts import render,redirect,get_object_or_404,get_list_or_404
 from django.views.generic import View,TemplateView,ListView
+from django.contrib.auth.decorators import login_required
 from esp.models import ESP,Key
 
 
 class EspPage(View):
+
     def get(self,request,*args,**kwargs):
         # esp_list = ESP.objects.filter(user=request.user)
         esp_list = get_list_or_404(ESP,user=request.user)
@@ -20,4 +22,8 @@ class EspPage(View):
                 key.current = not key.current
                 key.save()
         return redirect("esp_main")
+
+    @classmethod
+    def as_view(cls):
+        return login_required(super(EspPage, cls).as_view())
 
