@@ -38,7 +38,7 @@ def github_push():
 
 
 def main():
-    sections = '>AutoGithub♥\n1.Multi(commit+req.txt/push)\n2.Commit\n3.Push\n4.Req.txt extract\n5.1+sync\nyou@AutoGithub : '
+    sections = '>AutoGithub♥\n1.Multi(commit+req.txt/push)\n2.Commit\n3.Push\n4.Req.txt extract\n5.1+sync\n6.sync\nyou@AutoGithub : '
     section = input(sections)
 
     if section == '1':
@@ -56,6 +56,8 @@ def main():
         github_commit()
         github_push()
         wait_railway()
+        migrate_for_server()
+    if section == '6':
         migrate_for_server()
 
 
