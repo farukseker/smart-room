@@ -70,14 +70,18 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
         await self.set_esp_connect_status(esp_device, False)
 
     # Receive message from WebSocket
-    async def receive(self,*args,**kwargs):
-        print(args,kwargs)
+    async def receive(self, *args, **kwargs):
+        str_data = kwargs.get("text_data", None)
+        if str_data:
+            trigger = json.loads(str_data)
+            "sensor_trigger"
+        key = Key.objects.get(name="test")
+        key.time_range.now_in_time_range()
 
-
-        await self.channel_layer.group_send(
-            # self.room_group_name, {"type": "communication_message", "message": args[0]}
-            self.room_group_name, {"type": "set_master_key","pin":"LAMBA_PIN", "status": True}
-        )
+        # await self.channel_layer.group_send(
+        #     # self.room_group_name, {"type": "communication_message", "message": args[0]}
+        #     self.room_group_name, {"type": "set_master_key","pin":"LAMBA_PIN", "status": True}
+        # )
         # await self.channel_layer.group_send(
         #     # self.room_group_name, {"type": "communication_message", "message": args[0]}
         #     self.room_group_name, kwargs
@@ -90,12 +94,15 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
         await self.send(text_data=json.dumps({"message": message}))
 
     async def send_hello_esp(self):
-        await self.send(text_data=json.dumps({"message":"hi ESP!"}))
+        await self.send(text_data=json.dumps({"message": "hi ESP!"}))
 
     async def key_status(self,*args,**kwargs):
-        __dict = args[0]
-        pin = __dict.get("pin",None)
-        status = __dict.get("status",None)
+        print(args, kwargs)
+        pn = Key.objects.get(name='test')
+        print("time rangs")
+        print(pn.time_range.now_in_time_range())
+        pin = args[0].get("pin",None)
+        status = args[0].get("status",None)
         if pin != None and status != None:
             await self.send(text_data=json.dumps({"type": "key_update","pin":pin,"status":status}))
 

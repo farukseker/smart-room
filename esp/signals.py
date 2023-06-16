@@ -1,4 +1,6 @@
 import json
+
+import redis
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.db.models.signals import post_save
@@ -20,4 +22,6 @@ def send_message_to_socket(sender, instance, **kwargs):
                 "status": instance.current
             }
         )
-        # async_to_sync(channel_layer.disconnect)()
+            # pn = Key.objects.get(name='test')
+            # print("time rangs")
+            # print(pn.time_range.now_in_time_range())
