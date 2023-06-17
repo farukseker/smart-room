@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib import admin
 from . import models
 # Register your models here.
@@ -9,12 +11,18 @@ from django import forms
 
 admin.site.register(models.ESP)
 # admin.site.register(models.Key)
-admin.site.register(models.TimeRanger)
 
 
 class KeyModelAdminForm(forms.ModelForm):
-    start_time = forms.TimeField(widget=forms.TimeInput(attrs={'class': 'range-time-input'}), required=False)
-    end_time = forms.TimeField(widget=forms.TimeInput(attrs={'class': 'range-time-input'}), required=False)
+    start_time = forms.TimeField(widget=forms.TimeInput(attrs={'class': 'range-time-input'}), required=True)
+    end_time = forms.TimeField(widget=forms.TimeInput(attrs={'class': 'range-time-input'}), required=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        use_time_range = self.initial.get('use_time_range', self.instance.use_time_range)
+        self.fields['start_time'].required = use_time_range
+        self.fields['end_time'].required = use_time_range
 
     class Meta:
         model = models.Key
@@ -32,3 +40,4 @@ class KeyModelAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.Key, KeyModelAdmin)
+
