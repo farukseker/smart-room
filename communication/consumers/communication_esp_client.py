@@ -97,6 +97,7 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
         await self.send(text_data=json.dumps({"message": "hi ESP!"}))
 
     async def key_status(self,*args,**kwargs):
+        '''
         print(args, kwargs)
         pn = Key.objects.get(name='test')
         print("time rangs")
@@ -105,6 +106,8 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
         status = args[0].get("status",None)
         if pin != None and status != None:
             await self.send(text_data=json.dumps({"type": "key_update","pin":pin,"status":status}))
+        '''
+        return
 
     async def key_status_update_from_esp(self,*args,**kwargs):
         __dict = args[0]
