@@ -72,11 +72,11 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, *args, **kwargs):
         str_data = kwargs.get("text_data", None)
-        if str_data:
-            trigger = json.loads(str_data)
-            "sensor_trigger"
-        key = Key.objects.get(name="test")
-        key.time_range.now_in_time_range()
+        # if str_data:
+        #     trigger = json.loads(str_data)
+        #     "sensor_trigger"
+        # key = Key.objects.get(name="test")
+        # key.time_range.now_in_time_range()
 
         # await self.channel_layer.group_send(
         #     # self.room_group_name, {"type": "communication_message", "message": args[0]}
