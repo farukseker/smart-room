@@ -13,7 +13,7 @@ import asyncio
 class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
-    def verify_esp_id(self,id):
+    def verify_esp_id(self, id):
         try:
             ESP.objects.get(esp_id=id)
             return True
@@ -40,21 +40,23 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self):
         try:
             # user = self.scope["user"]
-            esp_id = self.scope['url_route']['kwargs'].get("esp_id",None)
-            # vid = await self.verify_esp_id(esp_id)
-            self.room_name = esp_id
-            self.room_group_name = "communication_%s" % self.room_name
+            esp_id = self.scope['url_route']['kwargs'].get("esp_id", None)
+            if await self.verify_esp_id(esp_id):
 
-            await self.channel_layer.group_add(
-                self.room_group_name, self.channel_name
-            )
+                # vid = await self.verify_esp_id(esp_id)
+                self.room_name = esp_id
+                self.room_group_name = "communication_%s" % self.room_name
 
-            await self.accept()
-            esp_device = await self.get_esp_device()
-            if esp_device:
-                await self.set_esp_connect_status(esp_device, True)
-                await self.set_sync_key_status(esp_device)
-            print("no esp in :{}".format(esp_id))
+                await self.channel_layer.group_add(
+                    self.room_group_name, self.channel_name
+                )
+
+                await self.accept()
+                esp_device = await self.get_esp_device()
+                if esp_device:
+                    await self.set_esp_connect_status(esp_device, True)
+                    await self.set_sync_key_status(esp_device)
+                print("no esp in conn:{}".format(esp_id))
 
         except Exception as er:
             print(er)
