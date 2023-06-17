@@ -51,8 +51,11 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
 
             await self.accept()
             esp_device = await self.get_esp_device()
-            await self.set_esp_connect_status(esp_device, True)
-            await self.set_sync_key_status(esp_device)
+            if esp_device:
+                await self.set_esp_connect_status(esp_device, True)
+                await self.set_sync_key_status(esp_device)
+            print("no esp in :{}".format(esp_id))
+
         except Exception as er:
             print(er)
 
@@ -67,6 +70,10 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
         )
 
         esp_device = await self.get_esp_device()
+        if esp_device:
+
+            print("no esp in :{}".format(self.channel_name))
+
         await self.set_esp_connect_status(esp_device, False)
 
     # Receive message from WebSocket
