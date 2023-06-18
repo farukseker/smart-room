@@ -13,7 +13,7 @@ from esp.models import ESP
 def send_message_to_socket(sender, instance, **kwargs):
     is_create_signal = kwargs.get("created")
     if not is_create_signal and not instance.last_updater_is_esp:
-        print("signal if block")
+        print(f"signal if block :to : {instance.owner_esp}" )
         try:
             channel_layer = get_channel_layer()
             print("channel_layer get")
