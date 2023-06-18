@@ -45,9 +45,10 @@ INSTALLED_APPS = [
 ]+[
     'esp',
     'communication',
-
+    'mobil_service',
 ]+[
-    'channels'
+    'channels',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

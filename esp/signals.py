@@ -1,5 +1,4 @@
 import json
-
 import redis
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
@@ -16,7 +15,6 @@ def send_message_to_socket(sender, instance, **kwargs):
         print(f"signal if block :to : {instance.owner_esp}" )
         try:
             channel_layer = get_channel_layer()
-            print("channel_layer get")
             async_to_sync(channel_layer.group_send)(
                 "communication_%s" % instance.owner_esp.esp_id,
                 {

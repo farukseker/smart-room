@@ -13,9 +13,9 @@ import asyncio
 class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
-    def verify_esp_id(self, id):
+    def verify_esp_id(self, esp_id: str):
         try:
-            ESP.objects.get(esp_id=id)
+            ESP.objects.get(esp_id=esp_id)
             return True
         except:
             pass
