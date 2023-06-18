@@ -54,8 +54,11 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
                 await self.accept()
                 esp_device = await self.get_esp_device()
                 if esp_device:
+                    print("esp status s")
+
                     await self.set_esp_connect_status(esp_device, True)
                     await self.set_sync_key_status(esp_device)
+                    print("esp status e")
                 print("no esp in conn:{}".format(esp_id))
 
         except Exception as er:
@@ -80,6 +83,7 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
 
     # Receive message from WebSocket
     async def receive(self, *args, **kwargs):
+        print("receive called ", args, kwargs)
         str_data = kwargs.get("text_data", None)
         # if str_data:
         #     trigger = json.loads(str_data)
@@ -91,10 +95,10 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
         #     # self.room_group_name, {"type": "communication_message", "message": args[0]}
         #     self.room_group_name, {"type": "set_master_key","pin":"LAMBA_PIN", "status": True}
         # )
-        # await self.channel_layer.group_send(
+        await self.channel_layer.group_send(
         #     # self.room_group_name, {"type": "communication_message", "message": args[0]}
-        #     self.room_group_name, kwargs
-        # )
+            self.room_group_name, kwargs
+        )
 
     # Receive message from room group
     async def communication_message(self, event):
