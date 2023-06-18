@@ -15,7 +15,7 @@ def send_message_to_socket(sender, instance, **kwargs):
     if not is_create_signal and not instance.last_updater_is_esp:
         print(f"signal if block :to : {instance.owner_esp}" )
         try:
-            channel_layer = get_channel_layer()
+            channel_layer = async_to_sync(get_channel_layer)()
             print("channel_layer get")
             async_to_sync(channel_layer.group_send)(
                 "communication_%s" % instance.owner_esp.esp_id,
