@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.http import HttpResponse,JsonResponse
-from django.urls import path
 
 from django.shortcuts import render
 
@@ -24,7 +23,7 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from esp.models import Key
 
 
-from django.urls import path
+from django.urls import path, include
 
 
 @csrf_exempt
@@ -54,6 +53,5 @@ from esp.views import EspPage
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', EspPage.as_view(),name="esp_main"),
-    path('api/trunon/',test_google)
-
+    path('api/', include('api.urls')),
 ]

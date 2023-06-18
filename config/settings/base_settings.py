@@ -45,9 +45,11 @@ INSTALLED_APPS = [
 ]+[
     'esp',
     'communication',
-
+    'mobil_service',
 ]+[
-    'channels'
+    'channels',
+    'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +62,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
 ]+["whitenoise.middleware.WhiteNoiseMiddleware"]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
 
 ROOT_URLCONF = 'config.urls'
 
