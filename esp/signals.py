@@ -16,6 +16,7 @@ def send_message_to_socket(sender, instance, **kwargs):
         print("signal if block")
         try:
             channel_layer = get_channel_layer()
+            print("channel_layer get")
             async_to_sync(channel_layer.group_send)(
                 "communication_%s" % instance.owner_esp.esp_id,
                 {
@@ -28,7 +29,7 @@ def send_message_to_socket(sender, instance, **kwargs):
             print("Exception FROM Signals")
             raise e
     else:
-        print("esp not vailedet : ", instance,is_create_signal)
+        print("esp not vailedet : ", instance, is_create_signal)
         # pn = Key.objects.get(name='test')
         # print("time rangs")
         # print(pn.time_range.now_in_time_range())
