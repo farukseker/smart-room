@@ -13,6 +13,7 @@ from esp.models import ESP
 def send_message_to_socket(sender, instance, **kwargs):
     is_create_signal = kwargs.get("created")
     if not is_create_signal and not instance.last_updater_is_esp:
+        print("signal if block")
         try:
             channel_layer = get_channel_layer()
             async_to_sync(channel_layer.group_send)(
@@ -26,6 +27,8 @@ def send_message_to_socket(sender, instance, **kwargs):
         except Exception as e:
             print("Exception FROM Signals")
             raise e
+    else:
+        print("esp not vailedet : ", instance,is_create_signal)
         # pn = Key.objects.get(name='test')
         # print("time rangs")
         # print(pn.time_range.now_in_time_range())
