@@ -53,6 +53,5 @@ from esp.views import EspPage
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', EspPage.as_view(),name="esp_main"),
-    path('api/mobil/', include("mobil_service.api.urls")),
-    path('api/trunon/', test_google)
+    path('api/', include('api.urls')),
 ]
