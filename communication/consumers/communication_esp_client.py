@@ -58,6 +58,7 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
 
                     await self.set_esp_connect_status(esp_device, True)
                     await self.set_sync_key_status(esp_device)
+                    await self.send_hello_esp()
                     print("esp status e")
                 print("no esp in conn:{}".format(esp_id))
 
