@@ -13,7 +13,7 @@ import asyncio
 class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
-    def verify_esp_id(self,id):
+    def verify_esp_id(self, id):
         try:
             ESP.objects.get(esp_id=id)
             return True
@@ -33,14 +33,14 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
             key.save()
 
     @database_sync_to_async
-    def set_esp_connect_status(self,device,status: bool):
+    def set_esp_connect_status(self, device, status: bool):
         device.is_connected = status
         device.save()
 
     async def connect(self):
         try:
             # user = self.scope["user"]
-            esp_id = self.scope['url_route']['kwargs'].get("esp_id",None)
+            esp_id = self.scope['url_route']['kwargs'].get("esp_id", None)
             # vid = await self.verify_esp_id(esp_id)
             self.room_name = esp_id
             self.room_group_name = "communication_%s" % self.room_name
@@ -56,10 +56,6 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
         except Exception as er:
             print(er)
 
-
-    # else:
-    #     raise DenyConnection
-
     async def disconnect(self, close_code):
         # Leave room group
         await self.channel_layer.group_discard(
@@ -72,7 +68,6 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self,*args,**kwargs):
         print(args,kwargs)
-
 
         await self.channel_layer.group_send(
             # self.room_group_name, {"type": "communication_message", "message": args[0]}
@@ -92,7 +87,7 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
     async def send_hello_esp(self):
         await self.send(text_data=json.dumps({"message":"hi ESP!"}))
 
-    async def key_status(self,*args,**kwargs):
+    async def key_status(self, *args, **kwargs):
         __dict = args[0]
         pin = __dict.get("pin",None)
         status = __dict.get("status",None)
