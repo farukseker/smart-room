@@ -10,6 +10,7 @@ from django.urls import path, reverse, resolve
 from django import forms
 
 admin.site.register(models.ESP)
+admin.site.register(models.Sensor)
 # admin.site.register(models.Key)
 
 

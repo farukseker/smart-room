@@ -33,3 +33,11 @@ class EspPage(View):
     def as_view(cls):
         return login_required(super(EspPage, cls).as_view())
 
+
+
+from esp.models import Sensor
+def test_eensor(request):
+    sm = Sensor.objects.first()
+    print(sm)
+    sm.get_action()
+    raise Http404("pars")

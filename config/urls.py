@@ -48,10 +48,11 @@ def test_google(request):
 def mindex(request):
     return render(request,'esp_manage.html')
 
-from esp.views import EspPage
+from esp.views import EspPage, test_eensor
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', EspPage.as_view(),name="esp_main"),
+    path('', EspPage.as_view(), name="esp_main"),
+    path('sensor/', test_eensor),
     path('api/', include('api.urls')),
 ]

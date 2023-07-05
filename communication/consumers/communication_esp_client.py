@@ -67,11 +67,11 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
 
     # Receive message from WebSocket
     async def receive(self,*args,**kwargs):
-        print(args,kwargs)
+        print(args, kwargs)
 
         await self.channel_layer.group_send(
             # self.room_group_name, {"type": "communication_message", "message": args[0]}
-            self.room_group_name, {"type": "set_master_key","pin":"LAMBA_PIN", "status": True}
+            self.room_group_name, {"type": "set_master_key", "pin": "LAMBA_PIN", "status": True}
         )
         # await self.channel_layer.group_send(
         #     # self.room_group_name, {"type": "communication_message", "message": args[0]}
@@ -85,7 +85,7 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
         await self.send(text_data=json.dumps({"message": message}))
 
     async def send_hello_esp(self):
-        await self.send(text_data=json.dumps({"message":"hi ESP!"}))
+        await self.send(text_data=json.dumps({"message": "hi ESP!"}))
 
     async def key_status(self, *args, **kwargs):
         __dict = args[0]
