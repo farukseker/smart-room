@@ -15,6 +15,7 @@ class Sensor(models.Model):
         ('MotionSensor', 'Motion Sensor'),
         ('MasterSwitchSensor', 'Master Hand Sensor'),
         ('SilentAlarmSensor', 'Silent Alarm Sensor'),
+        ('AlarmSensor', 'Alarm Sensor'),
     ]
 
     sensor_type = models.CharField(choices=sensor_type_list, max_length=55)
