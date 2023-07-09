@@ -25,8 +25,9 @@ class EspPage(View):
         if key:
             esp_list = ESP.objects.filter(user=request.user)
             if key.owner_esp in esp_list:
-                key.current = not key.current
-                key.save()
+                key.set_current(not key.current, False)
+                # key.current = not key.current
+                # key.save()
         return redirect("esp_main")
 
     @classmethod

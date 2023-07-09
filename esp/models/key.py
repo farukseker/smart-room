@@ -19,6 +19,12 @@ class Key(models.Model):
     start_time = models.TimeField(default=None, null=True)
     end_time = models.TimeField(default=None, null=True)
 
+    def set_current(self, current: bool, master: bool = False):
+        self.last_updater_is_esp = master
+        self.current = bool(current)
+
+        self.save()
+
     # Convert the time argument to a datetime object
     def now_in_time_range(self):
         right_now = datetime.now()
