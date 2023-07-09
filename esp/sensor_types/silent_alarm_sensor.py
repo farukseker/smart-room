@@ -13,7 +13,6 @@ class SilentAlarmSensor(SensorBase):
 
     alarm_classes = [
         sensor_actions.AlarmOn,
-        sensor_actions.ChangeCurrent,
     ]
 
     def take_action(self, *args, **kwargs):

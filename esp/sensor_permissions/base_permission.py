@@ -8,3 +8,4 @@ class Permission:
     def can(self) -> bool:
         getLogger('Permission').info("Built in Permission class always return {'False'}, please replace with overhead")
         return False
+
