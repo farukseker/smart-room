@@ -5,7 +5,7 @@ from .base_sensor import SensorBase
 
 class MotionSensor(SensorBase):
     action_classes = [
-        sensor_actions.OpenCurrent
+        sensor_actions.ChangeCurrent
     ]
 
     permission_classes = [

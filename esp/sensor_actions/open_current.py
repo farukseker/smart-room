@@ -1,4 +1,4 @@
-class OpenCurrent:
+class ChangeCurrent:
 
     def action(self, *args, **kwargs):
         sensor = kwargs.get('sensor', None)

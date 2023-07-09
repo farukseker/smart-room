@@ -8,7 +8,6 @@ class MasterSwitchSensor(SensorBase):
         sensor_permissions.Master,
     ]
     action_classes = [
-        sensor_actions.OpenCurrent,
+        sensor_actions.ChangeCurrent,
     ]
-
 
