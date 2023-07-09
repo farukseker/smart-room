@@ -8,12 +8,66 @@
     <link href="{% static 'bs5/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'aw/all.min.css' %}" rel="stylesheet">
     <script src="{% static 'aw/all.min.js' %}" rel="script"></script>
-    <script src="
-        https://cdn.jsdelivr.net/npm/vue@3.2.47/dist/vue.global.min.js
-        "></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.min.js"></script>
+
+ <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
 </head>
 <body>
-parsi
+{% verbatim %}
 
+<main id="app">
+    <div v-for="esp in esp_list" class="container border-0 border-top border-primary">
+        <div class="d-flex">
+            <h5 class="position-absolute">{{ esp.name }}</h5>
+            <h5 class="position-absolute">{{ esp.esp_id }}</h5>
+        </div>
+        <hr>
+        <div class="row m-0">
+            <div v-for="key in esp.keys">
+                {{ key }}
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endverbatim %}
+
+<script>
+
+new Vue({
+    el:'#app',
+    data:{
+        connection: null,
+        esp_list: []
+    },
+    methods: {
+
+    },
+
+    created: function() {
+    var vm = this; // Store reference to the Vue instance
+
+    console.log("Starting connection to WebSocket Server")
+    var origin = document.location.origin.replace("https","wss").replace("http","ws")
+    console.log(origin)
+    {#this.connection = new WebSocket(origin+ "/ws/communication/user/")#}
+    this.connection = new WebSocket("ws://192.168.0.111:8000"+ "/ws/communication/user/")
+
+    this.connection.onmessage = function(event) {
+        console.log(event)
+
+        var data = JSON.parse(event.data)
+        console.log(data.esp_list)
+        vm.esp_list = data.esp_list
+        }
+
+    this.connection.onopen = function(event) {
+      console.log(event)
+      console.log("Successfully connected to the echo websocket server...")
+    }
+  }
+});
+</script>
 </body>
 </html>

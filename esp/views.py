@@ -13,7 +13,7 @@ class EspPage(View):
             esp_list.append(esp)
 
         if esp_list:
-            return render(request, template_name="manage_esp_list.html", context={
+            return render(request, template_name="view_with_socket.html", context={
                 "esp_list": esp_list
             })
         else:
@@ -42,5 +42,6 @@ def test_eensor(request):
     sm = Sensor.objects.first()
     print(sm)
     print(sm.sensor_type)
-    sm.get_action(current=False, master=False)
+    # sm.get_action(current=False, master=False)
+    print(sm.__dict__)
     raise Http404("pars")

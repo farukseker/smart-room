@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 import uuid
 from django.db import models
 
-
 user_model = get_user_model()
 
 
@@ -21,3 +20,4 @@ class ESP(models.Model):
 
     def __str__(self):
         return f"{self.name}|{self.esp_id}"
+

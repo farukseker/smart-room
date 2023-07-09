@@ -1,2 +1,2 @@
 from .communication_esp_client import CommunicationEspClientConsumer
-
+from .communcation_esp_manager_client import CommunicationEspManagerClientConsumer

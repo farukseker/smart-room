@@ -8,45 +8,32 @@ from channels.exceptions import DenyConnection,RequestAborted
 from esp.models import ESP
 from esp.models import Key
 import asyncio
+from esp.api.serializers import EspSerializer
 
 
 class CommunicationEspManagerClientConsumer(AsyncJsonWebsocketConsumer):
 
-    @database_sync_to_async
-    def get_esp_device(self):
-        try:
-            return ESP.objects.get(esp_id=self.room_name)
-        except:
-            pass
-
-    @database_sync_to_async
-    def set_sync_key_status(self, esp_device: ESP):
-        for key in esp_device.get_keys():
-            key.last_updater_is_esp = False
-            key.save()
-
-    # @database_sync_to_async
-    # def set_esp_connect_status(self, device, status: bool):
-    #     device.is_connected = status
-    #     device.save()
-
     async def connect(self):
         try:
-            # user = self.scope["user"]
-            esp_id = self.scope['url_route']['kwargs'].get("esp_id", None)
-            # vid = await self.verify_esp_id(esp_id)
-            self.room_name = esp_id
-            self.room_group_name = "communication_%s" % self.room_name
+            user = self.scope["user"]
+            print("connect")
+            if user.is_authenticated:
+                self.room_name = str(self.scope["user"].username) + '_' + str(self.scope["user"].id)
+                print("mrb3")
 
-            await self.channel_layer.group_add(
-                self.room_group_name, self.channel_name
-            )
+                self.room_group_name = "communication_%s" % self.room_name
 
-            await self.accept()
-            esp_device = await self.get_esp_device()
-            await self.set_esp_connect_status(esp_device, True)
-            await self.set_sync_key_status(esp_device)
+                print("mrb2")
+
+                await self.channel_layer.group_add(
+                    self.room_group_name, self.channel_name
+                )
+                await self.accept()
+                print("mrb")
+                await self.send_esp_device_list()
+                print("con ok")
         except Exception as er:
+            print('er')
             print(er)
 
     async def disconnect(self, close_code):
@@ -55,8 +42,20 @@ class CommunicationEspManagerClientConsumer(AsyncJsonWebsocketConsumer):
             self.room_group_name, self.channel_name
         )
 
-        esp_device = await self.get_esp_device()
-        await self.set_esp_connect_status(esp_device, False)
+    async def send_hello_esp(self):
+        await self.send(text_data=json.dumps({"message": "hi ESP!"}))
+
+    @database_sync_to_async
+    def get_esp_device_list(self) -> list[dict]:
+        user = self.scope["user"]
+        return [EspSerializer(esp).data for esp in ESP.objects.filter(user=user)]
+
+    async def send_esp_device_list(self):
+        esp_list = await self.get_esp_device_list()
+
+        data = {"type": "esp_sync", "esp_list": esp_list}
+        print(data)
+        return await self.send(text_data=json.dumps(data))
 
     # Receive message from WebSocket
     async def receive(self, *args, **kwargs):
@@ -64,13 +63,7 @@ class CommunicationEspManagerClientConsumer(AsyncJsonWebsocketConsumer):
         if data := kwargs.get('text_data', None):
             data = json.loads(data)
 
-            print(data)
             await self.channel_layer.group_send(
-                # self.room_group_name, {"type": "communication_message", "message": args[0]}
-                # self.room_group_name, {"type": "set_master_key", "pin": "LAMBA_PIN", "status": True}
                 self.room_group_name, data
             )
-            # await self.channel_layer.group_send(
-            #     # self.room_group_name, {"type": "communication_message", "message": args[0]}
-            #     self.room_group_name, kwargsw
-            # )
+
