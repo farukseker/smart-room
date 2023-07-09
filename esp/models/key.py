@@ -22,7 +22,6 @@ class Key(models.Model):
     def set_current(self, current: bool, master: bool = False):
         self.last_updater_is_esp = master
         self.current = bool(current)
-
         self.save()
 
     # Convert the time argument to a datetime object

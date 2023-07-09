@@ -11,10 +11,15 @@ class SilentAlarmSensor(SensorBase):
         sensor_actions.ChangeCurrent,
     ]
 
+    alarm_classes = [
+        sensor_actions.AlarmOn,
+        sensor_actions.ChangeCurrent,
+    ]
+
     def take_action(self, *args, **kwargs):
         can = super().can_take_action()
         if not can:
-            self.action_classes.append(sensor_actions.AlarmOn)
+            self.action_classes = self.alarm_classes
         super().action(*args, **kwargs)
 
 
