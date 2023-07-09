@@ -36,6 +36,7 @@ class EspPage(View):
 
 
 from esp.models import Sensor
+
 def test_eensor(request):
     sm = Sensor.objects.first()
     print(sm)
