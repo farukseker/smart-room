@@ -41,5 +41,6 @@ from esp.models import Sensor
 def test_eensor(request):
     sm = Sensor.objects.first()
     print(sm)
-    sm.get_action()
+    print(sm.sensor_type)
+    sm.get_action(current=False, master=False)
     raise Http404("pars")

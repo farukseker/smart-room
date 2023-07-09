@@ -3,13 +3,12 @@ from esp import sensor_actions
 from .base_sensor import SensorBase
 
 
-class MotionSensor(SensorBase):
-    action_classes = [
-        sensor_actions.OpenCurrent
-    ]
-
+class MasterSwitchSensor(SensorBase):
     permission_classes = [
-        sensor_permissions.TimeRange
+        sensor_permissions.Master,
+    ]
+    action_classes = [
+        sensor_actions.OpenCurrent,
     ]
 
 
