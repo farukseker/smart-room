@@ -43,7 +43,9 @@ class Sensor(models.Model):
                 # log
                 pass
 
-#
+    def __str__(self):
+        return f"{self.esp.name} >] {self.id} / {self.sensor_type}"
+
 # class MotionSensor:
 #
 #     def __init__(self, sensor):

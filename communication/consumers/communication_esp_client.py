@@ -7,6 +7,7 @@ from channels.db import SyncToAsync,database_sync_to_async,DatabaseSyncToAsync
 from channels.exceptions import DenyConnection,RequestAborted
 from esp.models import ESP
 from esp.models import Key
+from esp.models import Sensor
 import asyncio
 
 import json
@@ -109,17 +110,24 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
             await self.send(text_data=json.dumps({"type": "key_update","pin":pin,"status":status}))
 
     # @database_sync_to_async
-    async def set_master_key(self,*args,**kwargs):
+    async def set_master_key(self, *args, **kwargs):
         esp_device = await self.get_esp_device()
 
         @database_sync_to_async
         def wrapper(esp_device, *args, **kwargs):
             try:
-                status = args[0].get('status')
-                key = esp_device.keys.get(pin_name="LAMBA_PIN")
-                key.set_current(status, True)
+                # status = args[0].get('status')
+                sensor_id = args[0].get('id')
 
-            except:
+                # key = esp_device.sensr.get(id=sensor_id)
+                # key.set_current(status, True)
+                sensor_list = Sensor.objects.filter(esp=esp_device)
+
+                if sensor := sensor_list.filter(id=int(sensor_id)).first():
+                    sensor.get_action(**args[0])
+
+            except Exception as e:
+                print(e)
                 pass
 
         return await wrapper(esp_device, *args,**kwargs)

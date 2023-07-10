@@ -12,4 +12,5 @@ class MotionSensor(SensorBase):
         sensor_permissions.TimeRange
     ]
 
-
+    def action(self, *args, **kwargs):
+        super().action(*args, **kwargs)

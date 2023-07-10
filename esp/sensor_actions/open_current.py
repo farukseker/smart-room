@@ -1,11 +1,13 @@
+import json
+
+
 class ChangeCurrent:
 
     def action(self, *args, **kwargs):
         sensor = kwargs.get('sensor', None)
-        master = kwargs.get('master', None)
-        current = kwargs.get('current', None)
-        if self.is_valid(sensor, master, current):
-            sensor.key.set_current(current=current, master=master)
+        current = kwargs.get('status', None)
+        if self.is_valid(sensor, current):
+            sensor.key.set_current(current=bool(int(current)), master=sensor.isMaster)
 
     @staticmethod
     def is_valid(*args):
