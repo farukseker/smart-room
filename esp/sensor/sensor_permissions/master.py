@@ -1,4 +1,4 @@
-from esp.sensor_permissions.base_permission import Permission
+from esp.sensor.sensor_permissions.base_permission import Permission
 
 
 class Master(Permission):

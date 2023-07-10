@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from esp.models import ESP, Key, Sensor
+from esp.models import ESP, Key, SensorModel
 
 
 class KeySerializer(serializers.ModelSerializer):
@@ -19,4 +19,6 @@ class EspSerializer(serializers.Serializer):
 
     esp_id = serializers.UUIDField(format='hex', read_only=True)
     keys = KeySerializer(many=True)
+    name = serializers.CharField(read_only=True)
+    is_connected = serializers.BooleanField(read_only=True)
     # api_key = serializers.UUIDField(format='hex', read_only=True)

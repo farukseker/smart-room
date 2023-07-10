@@ -1,16 +1,8 @@
 from django.db import models
-from asgiref.sync import async_to_sync
-from channels.layers import get_channel_layer
-from django.contrib.auth import get_user_model
-from datetime import datetime, time
-from importlib import import_module
-import uuid
+from esp.sensor.sensor_types import *
 
 
-from esp.sensor_types import *
-
-
-class Sensor(models.Model):
+class SensorModel(models.Model):
     sensor_type_list: list = [
         ('MotionSensor', 'Motion Sensor'),
         ('MasterSwitchSensor', 'Master Hand Sensor'),
@@ -23,13 +15,6 @@ class Sensor(models.Model):
     key = models.ForeignKey('esp.Key', on_delete=models.CASCADE, related_name='keys', null=True, default=None)
     isMaster = models.BooleanField(default=False)
     usage = models.BooleanField(default=False)
-
-    def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
-    ):
-        print('save')
-        print(self.key.current)
-        super().save()
 
     def can_use_sensor(self):
         return self.usage
@@ -45,26 +30,3 @@ class Sensor(models.Model):
 
     def __str__(self):
         return f"{self.esp.name} >] {self.id} / {self.sensor_type}"
-
-# class MotionSensor:
-#
-#     def __init__(self, sensor):
-#         self.sensor: Sensor = sensor
-#         self.can_action_classes: list = [
-#             sensor_action.TimeRange,
-#         ]
-#
-#     def open_current(self):
-#         self.sensor.key.current = True
-#         self.sensor.save()
-#
-#     def action(self):
-#         self.open_current()
-#
-#     def can_take_action(self):
-#         return all([s_class(self.sensor).can() for s_class in self.can_action_classes ])
-#
-#     def take_action(self):
-#         if self.can_take_action():
-#             self.action()
-#

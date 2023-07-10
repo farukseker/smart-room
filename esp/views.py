@@ -36,10 +36,10 @@ class EspPage(View):
 
 
 
-from esp.models import Sensor
+from esp.models import SensorModel
 
 def test_eensor(request):
-    sm = Sensor.objects.first()
+    sm = SensorModel.objects.first()
     print(sm)
     print(sm.sensor_type)
     # sm.get_action(current=False, master=False)

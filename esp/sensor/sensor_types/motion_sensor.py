@@ -1,6 +1,5 @@
-from esp import sensor_permissions
-from esp import sensor_actions
-from .base_sensor import SensorBase
+from .. import sensor_actions, sensor_permissions
+from esp.sensor.sensor_types.base_sensor import SensorBase
 
 
 class MotionSensor(SensorBase):

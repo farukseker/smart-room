@@ -8,16 +8,16 @@ class SensorBase:
 
     def get_permission_classes(self):
         assert self.permission_classes is not None, (
-            "'%s' should either include a `serializer_class` attribute, "
-            "or override the `get_serializer_class()` method."
+            "'%s' should either include a `permission_class` attribute, "
+            "or override the `get_permission_classes()` method."
             % self.__class__.__name__
         )
         return self.permission_classes
 
     def get_action_classes(self):
         assert self.action_classes is not None, (
-            "'%s' should either include a `serializer_class` attribute, "
-            "or override the `get_serializer_class()` method."
+            "'%s' should either include a `action_class` attribute, "
+            "or override the `get_action_classes()` method."
             % self.__class__.__name__
         )
         return self.action_classes

@@ -7,7 +7,7 @@ from channels.db import SyncToAsync,database_sync_to_async,DatabaseSyncToAsync
 from channels.exceptions import DenyConnection,RequestAborted
 from esp.models import ESP
 from esp.models import Key
-from esp.models import Sensor
+from esp.models import SensorModel
 import asyncio
 
 import json
@@ -121,7 +121,7 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
 
                 # key = esp_device.sensr.get(id=sensor_id)
                 # key.set_current(status, True)
-                sensor_list = Sensor.objects.filter(esp=esp_device)
+                sensor_list = SensorModel.objects.filter(esp=esp_device)
 
                 if sensor := sensor_list.filter(id=int(sensor_id)).first():
                     sensor.get_action(**args[0])

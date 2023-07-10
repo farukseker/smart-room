@@ -17,15 +17,27 @@
 {% verbatim %}
 
 <main id="app">
-    <div v-for="esp in esp_list" class="container border-0 border-top border-primary">
+    <div v-for="esp in esp_list" class="container border-0 border-top border-primary mt-2">
         <div class="d-flex">
             <h5 class="position-absolute">{{ esp.name }}</h5>
-            <h5 class="position-absolute">{{ esp.esp_id }}</h5>
+            <span class="w-100"></span>
+            <i class="fas fa-circle my-auto" :style="esp.is_connected ? 'color: aquamarine;' : 'color: orangered;' "></i>
         </div>
         <hr>
         <div class="row m-0">
-            <div v-for="key in esp.keys">
-                {{ key }}
+            <div v-for="key in esp.keys" class="col-xm-12 col-md-2 d-md-flex d-sm-block px-1 mb-2 mb-md-0 position-relative">
+                <div class="w-100 d-md-block d-sm-flex p-2 rounded border border-primary">
+                    <div class="d-flex w-100">
+                        <h6 class="w-100">{{ key.name }}</h6>
+                        <span class="w-100"></span>
+                        <i v-if="key.current" class="fa-solid fa-lightbulb text-warning"></i>
+                        <i v-else class="fa-regular fa-lightbulb"></i>
+                    </div>
+
+                    <div class="my-auto w-100 text-end text-md-center d-flex">
+<button :class="[key.current ? 'btn-success' : 'btn-danger', 'btn', 'btn-sm', 'col']" type="submit">Aç</button>
+                    </div>
+                    </div>
             </div>
         </div>
     </div>

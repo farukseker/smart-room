@@ -1,5 +1,4 @@
-from esp import sensor_permissions
-from esp import sensor_actions
+from .. import sensor_actions, sensor_permissions
 from .base_sensor import SensorBase
 
 
