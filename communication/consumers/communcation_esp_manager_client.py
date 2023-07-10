@@ -46,7 +46,7 @@ class CommunicationEspManagerClientConsumer(AsyncJsonWebsocketConsumer):
         await self.send(text_data=json.dumps({"message": "hi ESP!"}))
 
     @database_sync_to_async
-    def get_esp_device_list(self) -> list[dict]:
+    def get_esp_device_list(self):  # -> list[dict]
         user = self.scope["user"]
         return [EspSerializer(esp).data for esp in ESP.objects.filter(user=user)]
 
