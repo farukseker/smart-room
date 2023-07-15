@@ -12,26 +12,31 @@ from esp.api.serializers import EspSerializer
 
 
 class CommunicationEspManagerClientConsumer(AsyncJsonWebsocketConsumer):
+    async def change_key_status_request(self, *args, **kwargs):
+        user = self.scope["user"]
+
+        @sync_to_async
+        def wrapper():
+            key = Key.objects.filter(id=args[0].get('key_id')).first()
+            if ESP.objects.filter(user=user, key=key).first():
+                key.set_current(args[0].get('status'))
+
+        await wrapper()
+
+        return await self.send_esp_device_list()
 
     async def connect(self):
         try:
             user = self.scope["user"]
-            print("connect")
             if user.is_authenticated:
                 self.room_name = str(self.scope["user"].username) + '_' + str(self.scope["user"].id)
-                print("mrb3")
-
                 self.room_group_name = "communication_%s" % self.room_name
-
-                print("mrb2")
 
                 await self.channel_layer.group_add(
                     self.room_group_name, self.channel_name
                 )
                 await self.accept()
-                print("mrb")
                 await self.send_esp_device_list()
-                print("con ok")
         except Exception as er:
             print('er')
             print(er)
@@ -52,14 +57,11 @@ class CommunicationEspManagerClientConsumer(AsyncJsonWebsocketConsumer):
 
     async def send_esp_device_list(self):
         esp_list = await self.get_esp_device_list()
-
         data = {"type": "esp_sync", "esp_list": esp_list}
-        print(data)
         return await self.send(text_data=json.dumps(data))
 
     # Receive message from WebSocket
     async def receive(self, *args, **kwargs):
-        print(args, kwargs)
         if data := kwargs.get('text_data', None):
             data = json.loads(data)
 
