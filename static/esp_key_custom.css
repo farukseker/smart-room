@@ -1,0 +1,23 @@
+
+.esp_key_timerange{}
+.esp_key_timerange_info{
+	background-color: transparent;
+	visibility: hidden;
+	position: absolute;
+}
+
+.esp_key_timerange:hover{
+	color:red
+}
+.esp_key_timerange:hover .esp_key_timerange_info {
+	visibility: visible;
+	transition: 550ms;
+	/*margin: 2px;*/
+	/*margin-left: 1px;*/
+	/*margin-right: 1px;*/
+	/*top: -35px;*/
+	/*padding: 7px;*/
+	/*border-radius: 25px;*/
+	/*background-color: #34467596;*/
+	/*font-family: sans-serif;*/
+}

@@ -7,6 +7,7 @@
 
     <link href="{% static 'bs5/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'aw/all.min.css' %}" rel="stylesheet">
+    <link href="{% static 'esp_key_custom.css' %}" rel="stylesheet">
     <script src="{% static 'aw/all.min.js' %}" rel="script"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.min.js"></script>
 
@@ -30,12 +31,17 @@
                     <div class="d-flex w-100">
                         <h6 class="w-100">{{ key.name }}</h6>
                         <span class="w-100"></span>
+                        <span class="esp_key_timerange_info"> 12 den / e</span>
+                        <div v-if="key.use_time_range" class="esp_key_timerange">
+                            <i  class="fa-regular fa-clock me-2"></i>
+
+                        </div>
                         <i v-if="key.current" class="fa-solid fa-lightbulb text-warning"></i>
                         <i v-else class="fa-regular fa-lightbulb"></i>
                     </div>
 
                     <div class="my-auto w-100 text-end text-md-center d-flex">
-<button :class="[key.current ? 'btn-success' : 'btn-danger', 'btn', 'btn-sm', 'col']" type="submit">Aç</button>
+                        <button :class="[key.current ? 'btn-success' : 'btn-danger', 'btn', 'btn-sm', 'col']" type="submit">Aç</button>
                     </div>
                     </div>
             </div>
