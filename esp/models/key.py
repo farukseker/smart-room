@@ -26,12 +26,16 @@ class Key(models.Model):
 
     # Convert the time argument to a datetime object
     def now_in_time_range(self):
-        right_now = datetime.now()
+        right_now_obj = datetime.now()
+        right_now = right_now_obj.hour
 
         start_time_obj = datetime.combine(datetime.now(), self.start_time)
-        end_time_obj = datetime.combine(datetime.now(), self.end_time)
+        start_time = start_time_obj.hour
 
-        return end_time_obj.hour <= right_now.hour <= start_time_obj.hour if start_time_obj > end_time_obj else start_time_obj.hour <= right_now.hour <= end_time_obj.hour
+        end_time_obj = datetime.combine(datetime.now(), self.end_time)
+        end_time = end_time_obj.hour
+
+        return start_time <= right_now <= end_time or start_time > end_time and (right_now >= start_time or right_now <= end_time)
 
     def __str__(self):
         return f"key : { self.name }|{ self.pin_name } @ { self.owner_esp }"
