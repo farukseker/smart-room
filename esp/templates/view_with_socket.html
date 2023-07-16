@@ -18,14 +18,14 @@
 {% verbatim %}
 
 <main id="app">
-    <div v-for="esp in esp_list" class="container border-0 border-top border-primary mt-2">
+    <div v-for="esp in esp_list" class="container border-0 border-top border-primary mt-2 pt-2">
         <div class="d-flex">
             <h5 class="position-absolute">{{ esp.name }}</h5>
             <span class="w-100"></span>
             <i class="fas fa-circle my-auto" :style="esp.is_connected ? 'color: aquamarine;' : 'color: orangered;' "></i>
         </div>
         <hr>
-        <div class="row m-0">
+        <div class="row m-0 mb-2">
             <div v-for="key in esp.keys" class="col-xm-12 col-md-2 d-md-flex d-sm-block px-1 mb-2 mb-md-0 position-relative">
                 <div class="w-100 d-md-block d-sm-flex p-2 rounded border border-primary">
                     <div class="d-flex w-100">
@@ -33,10 +33,14 @@
                         <span class="w-100"></span>
                         <span class="esp_key_timerange_info"> 12 den / e</span>
                         <div v-if="key.use_time_range" class="esp_key_timerange">
-                            <i  class="fa-regular fa-clock me-2"></i>
+                            <i  class="fa-regular fa-clock my-auto"></i>
                         </div>
-                        <i v-if="key.current" class="fa-solid fa-lightbulb text-warning"></i>
-                        <i v-else class="fa-regular fa-lightbulb"></i>
+                        <div v-show="key.current" class="text-warning">
+                            <i class="fa-solid fa-lightbulb ms-2 my-auto"></i>
+                        </div>
+                        <div v-show="!key.current" class="text-secondary">
+                            <i class="fa-regular fa-lightbulb ms-2 my-auto"></i>
+                        </div>
                     </div>
 
                     <div class="my-auto w-100 text-end text-md-center d-flex">
