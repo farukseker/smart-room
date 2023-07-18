@@ -1,14 +1,14 @@
 ## smart home with esp - project
 
 #### uses:
-*[x] Python  
-*[x] django 
-*[x] Redis
-  *[x] Socket   
-*[x] PostgresSQL
-*[ ] Vue.js cli
-*[ ] Flutter
-*[ ] Google-Asistan
+* [x] Python  
+* [x] django 
+* [x] Redis
+  * [x] Socket   
+* [x] PostgresSQL
+* [ ] Vue.js cli
+* [ ] Flutter
+* [ ] Google-Asistan
 
 ### server
 
