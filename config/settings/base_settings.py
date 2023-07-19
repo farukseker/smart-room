@@ -46,11 +46,14 @@ INSTALLED_APPS = [
     'esp',
     'communication',
     'mobil_service',
+    'Account',
+    'Auth',
 ]+[
     'channels',
     'rest_framework',
     'rest_framework_simplejwt',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,14 +63,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-]+["whitenoise.middleware.WhiteNoiseMiddleware"]
+]+[
+    "whitenoise.middleware.WhiteNoiseMiddleware"
+]+[
+    'Auth.middleware.OTPMiddleware',
+]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
+
+AUTH_USER_MODEL = "Account.CustomUserModel"
 
 ROOT_URLCONF = 'config.urls'
 
@@ -132,3 +140,12 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# EMAIL
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_USE_TLS = True
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

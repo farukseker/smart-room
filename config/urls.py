@@ -25,6 +25,8 @@ from esp.models import Key
 
 from django.urls import path, include
 
+from Auth import views as auth_view
+
 
 @csrf_exempt
 @xframe_options_exempt
@@ -43,16 +45,34 @@ def test_google(request):
         return JsonResponse({"status":200,"markus":"parse"})
 
 
+from django.contrib.auth import get_user_model
 
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
+import qrcode
+from io import BytesIO
+import base64
+
+import pyotp
+
+
+user_model = get_user_model()
 
 def mindex(request):
-    return render(request,'esp_manage.html')
+
+    return render(request, 'esp_manage.html')
 
 from esp.views import EspPage, test_eensor
 
 urlpatterns = [
+    path('admin/login/', auth_view.CustomAdminLogin.as_view(), name='login'),
+    path('admin/get-otp/', auth_view.GetOtp.as_view(), name='get-otp'),
+    path('admin/otp/', auth_view.OTPView.as_view(), name='otp-admin'),
     path('admin/', admin.site.urls),
     path('', EspPage.as_view(), name="esp_main"),
     path('sensor/', test_eensor),
+    path('mail/', mindex),
     path('api/', include('api.urls')),
 ]

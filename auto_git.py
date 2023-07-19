@@ -15,6 +15,11 @@ def github_commit():
 def migrate_for_server():
     print('Makemigrations Start')
     os.system('python manage.py makemigrations --settings config.settings.product')
+    # dumpdata > veritabani_yedekleme.json
+    # python manage.py dumpdata > veritabani_yedekleme.json --settings config.settings.product
+    # python manage.py dumpdata esp.ESP> backup/esp.json --settings config.settings.product
+    # python manage.py dumpdata esp.Key> key.json --settings config.settings.product
+    # python manage.py dumpdata esp.SensorModel> SensorModel.json --settings config.settings.product
     print('Makemigrations Finished')
     time.sleep(2)
     print('Migrate Start')

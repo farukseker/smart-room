@@ -15,6 +15,7 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/config" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/backup" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -27,6 +28,8 @@
         <option value="$MODULE_DIR$/templates" />
         <option value="$MODULE_DIR$/static" />
         <option value="$MODULE_DIR$/esp/templates" />
+        <option value="$MODULE_DIR$/Account/templates" />
+        <option value="$MODULE_DIR$/Auth/templates" />
       </list>
     </option>
   </component>

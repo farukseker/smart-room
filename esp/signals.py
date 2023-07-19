@@ -23,6 +23,12 @@ def send_message_to_socket(sender, instance, **kwargs):
                     "status": instance.current
                 }
             )
+            async_to_sync(channel_layer.group_send)(
+                f"communication_{instance.owner_esp.user.username}_{instance.owner_esp.user.id}" ,
+                {
+                    "type": "send_esp_device_list",
+                }
+            )
         except Exception as e:
             print("Exception FROM Signals")
             raise e

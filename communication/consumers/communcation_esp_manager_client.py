@@ -21,9 +21,7 @@ class CommunicationEspManagerClientConsumer(AsyncJsonWebsocketConsumer):
             if ESP.objects.filter(user=user, key=key).first():
                 key.set_current(args[0].get('status'))
 
-        await wrapper()
-
-        return await self.send_esp_device_list()
+        return await wrapper()
 
     async def connect(self):
         try:
@@ -55,7 +53,7 @@ class CommunicationEspManagerClientConsumer(AsyncJsonWebsocketConsumer):
         user = self.scope["user"]
         return [EspSerializer(esp).data for esp in ESP.objects.filter(user=user).order_by('name')]
 
-    async def send_esp_device_list(self):
+    async def send_esp_device_list(self, *args, **kwargs):
         esp_list = await self.get_esp_device_list()
         data = {"type": "esp_sync", "esp_list": esp_list}
         return await self.send(text_data=json.dumps(data))
