@@ -6,9 +6,18 @@
                     <li class="nav-item"></li>
                 </ul>
             </div>
-            <div class="dropdown"><a class="dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" href="#">Dropdown </a>
-                <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
-            </div>
+<div class="nav-link dropdown">
+    <a class="mt-2 text-decoration-none" aria-expanded="true" data-bs-toggle="dropdown" href="#" style="content: none;color: var(--bs-dark);">
+
+        <img class="rounded-circle d-inline-block" size="cover" src="https://github.com/f4ruk-seker.png" width="36" height="36">
+
+        <strong class="ms-2 fw-bold">pars</strong>
+    </a>
+    <div class="dropdown-menu" data-bs-popper="static">
+        <a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a>
+        <a class="dropdown-item" href="{% url 'admin:logout' %}">LogOUT</a>
+    </div>
+</div>
         </div>
     </div>
 </nav>
