@@ -1,22 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>ESP Manage</title>
-    {% load static %}
+{% extends 'base.html' %}
 
-    <link href="{% static 'bs5/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'aw/all.min.css' %}" rel="stylesheet">
-    <link href="{% static 'esp_key_custom.css' %}" rel="stylesheet">
-    <script src="{% static 'aw/all.min.js' %}" rel="script"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.min.js"></script>
+{% block title %}ESP Manage{% endblock %}
 
- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+{% block content %}
 
-</head>
-<body>
 {% verbatim %}
-
 <main id="app">
     <div v-for="esp in esp_list" class="container border-0 border-top border-primary mt-2 pt-2">
         <div class="d-flex">
@@ -53,50 +41,11 @@
         </div>
     </div>
 </main>
-
 {% endverbatim %}
 
-<script>
+{% endblock %}
 
-new Vue({
-    el:'#app',
-    data:{
-        connection: null,
-        esp_list: []
-    },
-    methods: {
-        send_key_change_status(key_id, status){
-            this.connection.send(JSON.stringify({
-                "type":"change_key_status_request",
-                "key_id":key_id,
-                "status":!status
-            }))
-        }
-    },
-
-    created: function() {
-    var vm = this; // Store reference to the Vue instance
-
-    console.log("Starting connection to WebSocket Server")
-    var origin = document.location.origin.replace("https","wss").replace("http","ws")
-    console.log(origin)
-    {#this.connection = new WebSocket(origin+ "/ws/communication/user/")#}
-    this.connection = new WebSocket(origin + "/ws/communication/user/")
-
-    this.connection.onmessage = function(event) {
-        console.log(event)
-
-        var data = JSON.parse(event.data)
-        console.log(data.esp_list)
-        vm.esp_list = data.esp_list
-        }
-
-    this.connection.onopen = function(event) {
-      console.log(event)
-      console.log("Successfully connected to the echo websocket server...")
-    }
-  }
-});
-</script>
-</body>
-</html>
+{% block script %}
+    {% load static %}
+    <script src="{% static 'js/esp_manage_main.js' %}"></script>
+{% endblock %}
