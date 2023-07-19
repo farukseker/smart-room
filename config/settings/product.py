@@ -74,3 +74,7 @@ sentry_sdk.init(
 )
 
 """
+
+LOGIN_URL = 'admin/login'
+LOGIN_REDIRECT_URL = '/'
+
