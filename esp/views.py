@@ -41,4 +41,4 @@ from esp.models import SensorModel
 def test_eensor(request):
     from django.utils import timezone
 
-    raise Http404(",".join([timezone.now(),timezone.get_default_timezone(),timezone._get_timezone_name()]))
+    raise Http404(",".join([str(timezone.now()),str(timezone.get_default_timezone()), str(timezone.tzinfo)]))
