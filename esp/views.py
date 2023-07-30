@@ -39,9 +39,6 @@ class EspPage(View):
 from esp.models import SensorModel
 
 def test_eensor(request):
-    sm = SensorModel.objects.first()
-    print(sm)
-    print(sm.sensor_type)
-    # sm.get_action(current=False, master=False)
-    print(sm.__dict__)
-    raise Http404("pars")
+    from django.utils import timezone
+
+    raise Http404(",".join([timezone.now(),timezone.get_default_timezone(),timezone._get_timezone_name()]))
