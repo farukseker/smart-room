@@ -32,8 +32,14 @@ new Vue({
         }
 
     this.connection.onopen = function(event) {
-      console.log(event)
-      console.log("Successfully connected to the echo websocket server...")
+        var loader = document.getElementById('loader')
+        loader.style = 'display: none'
+
+        var view = document.getElementById('view')
+        view.style = 'display: block'
+
+        console.log(event)
+        console.log("Successfully connected to the echo websocket server...")
     }
   }
 });
