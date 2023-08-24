@@ -35,7 +35,18 @@ class Key(models.Model):
         end_time_obj = datetime.combine(datetime.now(), self.end_time)
         end_time = end_time_obj.hour
 
-        return start_time <= right_now <= end_time or start_time > end_time and (right_now >= start_time or right_now <= end_time)
+        # if start_time > end_time:
+        #     return end_time >= right_now >= end_time
+        # else:
+        #     return start_time >= right_now >= end_time
+
+        if end_time > start_time:
+            return start_time <= right_now <= end_time
+        else:
+            if end_time <= right_now and start_time <= right_now:
+                return True
+            if end_time < 24:
+                return end_time >= right_now
 
     def __str__(self):
         return f"key : { self.name }|{ self.pin_name } @ { self.owner_esp }"
