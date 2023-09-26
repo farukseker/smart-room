@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     {% include 'statics.html' %}
 </head>
-<body>
+<body id="esp_manage_base" onload="load_base_thm()">
 {% if request.user.is_authenticated %}
     {% include 'navbar.html' %}
 {% endif %}
@@ -14,5 +14,20 @@
 {% endblock %}
 {% block script %}
 {% endblock %}
+<script>
+    function load_base_thm() {
+    var now = new Date();
+    if (now.getHours() >= 18 || now.getHours() <= 8){
+        document.getElementById('esp_manage_base').classList = ['bg-dark']
+        var element_list = ["div", "strong", "p", "span", 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'button']
+        element_list.forEach(value => {
+            var obj_list = document.getElementsByTagName(value)
+            for (let obj_index = 0; obj_index < obj_list.length; obj_index++) {
+                obj_list[obj_index].classList.add('text-light')
+            }
+        })
+    }
+    }
+</script>
 </body>
 </html>
