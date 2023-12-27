@@ -33,6 +33,11 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8080'
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -51,7 +56,9 @@ INSTALLED_APPS = [
 ]+[
     'channels',
     'rest_framework',
+    'rest_framework.authtoken',
     'rest_framework_simplejwt',
+    'corsheaders',
 ]
 
 
@@ -64,7 +71,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]+[
-    "whitenoise.middleware.WhiteNoiseMiddleware"
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    'corsheaders.middleware.CorsMiddleware'
 ]+[
     'Auth.middleware.OTPMiddleware',
 ]
@@ -72,6 +80,7 @@ MIDDLEWARE = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework_simplejwt.authentication.JWTStatelessUserAuthentication',
     ],
 }
 
@@ -149,3 +158,4 @@ EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_USE_TLS = True
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+

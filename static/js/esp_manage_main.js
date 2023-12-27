@@ -2,7 +2,7 @@ new Vue({
     el:'#app',
     data:{
         connection: null,
-        esp_list: []
+        esp_list: [],
     },
     methods: {
         send_key_change_status(key_id, status){
@@ -32,11 +32,11 @@ new Vue({
         }
 
     this.connection.onopen = function(event) {
-        var loader = document.getElementById('loader')
-        loader.style = 'display: none'
-
-        var view = document.getElementById('view')
-        view.style = 'display: block'
+        // var loader = document.getElementById('loader')
+        // loader.style = 'display: none'
+        //
+        // var view = document.getElementById('view')
+        // view.style = 'display: block'
 
         console.log(event)
         console.log("Successfully connected to the echo websocket server...")

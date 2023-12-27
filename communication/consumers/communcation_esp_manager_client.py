@@ -1,17 +1,29 @@
 import json
-import time
-
 from asgiref.sync import async_to_sync,sync_to_async
-from channels.generic.websocket import WebsocketConsumer,AsyncJsonWebsocketConsumer
-from channels.db import SyncToAsync,database_sync_to_async,DatabaseSyncToAsync
-from channels.exceptions import DenyConnection,RequestAborted
+from channels.generic.websocket import WebsocketConsumer, AsyncJsonWebsocketConsumer
+from channels.db import SyncToAsync,database_sync_to_async, DatabaseSyncToAsync
+from datetime import datetime
+from channels.exceptions import DenyConnection, RequestAborted
+from django.contrib.auth.models import AnonymousUser
+
 from esp.models import ESP
 from esp.models import Key
 import asyncio
 from esp.api.serializers import EspSerializer
+from rest_framework.authtoken.models import Token
+from communication.models import WebSocketConsumerAccessesModel
 
 
 class CommunicationEspManagerClientConsumer(AsyncJsonWebsocketConsumer):
+
+    async def get_session(self, accesses_token):
+        @sync_to_async()
+        def wrapper():
+            accesses = WebSocketConsumerAccessesModel.objects.filter(accesses_token=accesses_token).first()
+            if accesses and accesses.user.is_active:
+                return accesses.user
+        return await wrapper()
+
     async def change_key_status_request(self, *args, **kwargs):
         user = self.scope["user"]
 
@@ -25,8 +37,9 @@ class CommunicationEspManagerClientConsumer(AsyncJsonWebsocketConsumer):
 
     async def connect(self):
         try:
-            user = self.scope["user"]
-            if user.is_authenticated:
+            accesses_token = self.scope['url_route']['kwargs'].get("accesses_token", None)
+            if session_user := await self.get_session(accesses_token):
+                self.scope['user'] = session_user
                 self.room_name = str(self.scope["user"].username) + '_' + str(self.scope["user"].id)
                 self.room_group_name = "communication_%s" % self.room_name
 
@@ -66,4 +79,3 @@ class CommunicationEspManagerClientConsumer(AsyncJsonWebsocketConsumer):
             await self.channel_layer.group_send(
                 self.room_group_name, data
             )
-
