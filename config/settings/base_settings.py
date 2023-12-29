@@ -32,12 +32,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CORS_ALLOW_ALL_ORIGINS = False
-CORS_ALLOWED_ORIGINS = [
-    'smart.farukseker.com.tr',
-    'smart.farukseker.gen.tr'
+CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = [
+#     'https://smart.farukseker.com.tr/',
+#     'https://smart.farukseker.gen.tr/'
+# ]
 
-]
 
 # Application definition
 

@@ -80,9 +80,10 @@ LOGIN_URL = 'admin/login'
 LOGIN_REDIRECT_URL = '/'
 
 CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [
-    'smart.farukseker.com.tr',
-    'smart.farukseker.gen.tr'
-
-]
-
+# CORS_ALLOWED_ORIGINS = [
+#     'https://smart.farukseker.com.tr/',
+#     'https://smart.farukseker.gen.tr/',
+#     'https://chipper-beijinho-7e220b.netlify.app/'
+#
+# ]
+#
