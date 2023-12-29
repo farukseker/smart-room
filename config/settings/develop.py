@@ -27,7 +27,7 @@ STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     'smart.farukseker.com.tr'
 ]
