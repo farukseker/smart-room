@@ -1,7 +1,8 @@
 from .base_settings import *
 
 
-CSRF_TRUSTED_ORIGINS = ['https://*.up.railway.app', "https://smart-room-production.up.railway.app/",
+CSRF_TRUSTED_ORIGINS = ['https://*.up.railway.app',
+                        "https://smart-room-production.up.railway.app/",
                         'https://smart.farukseker.gen.tr/',
                         'https://smart.farukseker.com.tr/',
                         'https://24m9nvnv.up.railway.app',
@@ -84,6 +85,5 @@ CORS_ALLOW_ALL_ORIGINS = True
 #     'https://smart.farukseker.com.tr/',
 #     'https://smart.farukseker.gen.tr/',
 #     'https://chipper-beijinho-7e220b.netlify.app/'
-#
 # ]
-#
+
