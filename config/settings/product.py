@@ -78,3 +78,8 @@ sentry_sdk.init(
 LOGIN_URL = 'admin/login'
 LOGIN_REDIRECT_URL = '/'
 
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    'smart.farukseker.com.tr'
+]
+
