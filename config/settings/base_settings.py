@@ -37,8 +37,6 @@ CORS_ALLOWED_ORIGINS = [
     'smart.farukseker.com.tr'
 ]
 
-
-
 # Application definition
 
 INSTALLED_APPS = [
