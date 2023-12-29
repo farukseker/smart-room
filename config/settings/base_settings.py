@@ -34,7 +34,9 @@ ALLOWED_HOSTS = ['*']
 
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
-    'smart.farukseker.com.tr'
+    'smart.farukseker.com.tr',
+    'smart.farukseker.gen.tr'
+
 ]
 
 # Application definition
