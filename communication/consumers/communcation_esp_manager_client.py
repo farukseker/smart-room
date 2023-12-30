@@ -15,6 +15,9 @@ from communication.models import WebSocketConsumerAccessesModel
 
 
 class CommunicationEspManagerClientConsumer(AsyncJsonWebsocketConsumer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.socket_accesses_token = None
 
     async def get_session(self, accesses_token):
         @sync_to_async()
@@ -23,6 +26,17 @@ class CommunicationEspManagerClientConsumer(AsyncJsonWebsocketConsumer):
             if accesses and accesses.user.is_active:
                 return accesses.user
         return await wrapper()
+
+    async def remove_session(self, accesses_token):
+        @sync_to_async()
+        def wrapper():
+            (
+             WebSocketConsumerAccessesModel
+             .objects.filter(accesses_token=accesses_token)
+             .first().delete()
+             )
+        return await wrapper()
+
 
     async def change_key_status_request(self, *args, **kwargs):
         user = self.scope["user"]
@@ -39,6 +53,7 @@ class CommunicationEspManagerClientConsumer(AsyncJsonWebsocketConsumer):
         try:
             accesses_token = self.scope['url_route']['kwargs'].get("accesses_token", None)
             if session_user := await self.get_session(accesses_token):
+                self.socket_accesses_token = accesses_token
                 self.scope['user'] = session_user
                 self.room_name = str(self.scope["user"].username) + '_' + str(self.scope["user"].id)
                 self.room_group_name = "communication_%s" % self.room_name
@@ -57,6 +72,7 @@ class CommunicationEspManagerClientConsumer(AsyncJsonWebsocketConsumer):
         await self.channel_layer.group_discard(
             self.room_group_name, self.channel_name
         )
+        await self.remove_session(self.socket_accesses_token)
 
     async def send_hello_esp(self):
         await self.send(text_data=json.dumps({"message": "hi ESP!"}))
