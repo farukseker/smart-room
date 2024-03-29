@@ -37,7 +37,6 @@ class CommunicationEspManagerClientConsumer(AsyncJsonWebsocketConsumer):
              )
         return await wrapper()
 
-
     async def change_key_status_request(self, *args, **kwargs):
         user = self.scope["user"]
 
