@@ -1,3 +1,4 @@
+from datetime import timedelta
 from .base_settings import *
 
 
