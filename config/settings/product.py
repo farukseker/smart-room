@@ -89,3 +89,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 #     'https://chipper-beijinho-7e220b.netlify.app/'
 # ]
 
+SIMPLE_JWT: dict = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
+}
