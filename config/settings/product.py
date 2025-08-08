@@ -1,7 +1,7 @@
 from datetime import timedelta
 from .base_settings import *
 
-
+DEBUG = True
 CSRF_TRUSTED_ORIGINS = ['https://*.up.railway.app',
                         "https://smart-room-production.up.railway.app/",
                         'https://smart.farukseker.com.tr'
@@ -44,12 +44,12 @@ from sentry_sdk.integrations.django import DjangoIntegration
 
 sentry_sdk.init(
     dsn=env("SENTRY_DSN"),
-    integrations=[DjangoIntegration(),],
+    # integrations=[DjangoIntegration(),],
 
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for performance monitoring.
     # We recommend adjusting this value in production.
-    traces_sample_rate=1.0,
+    # traces_sample_rate=1.0,
 
     # If you wish to associate users to errors (assuming you are using
     # django.contrib.auth) you may enable sending PII data.
