@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import requests
 import os
-
+from datetime import datetime
 
 ESP_USER_COM = env('ESP_USER_COM')
 API_KEY = env("ESP_TEMP_API_KEY")
@@ -20,8 +20,8 @@ def send_discord(request):
 
         try:
             webhook = SyncWebhook.from_url(ESP_USER_COM)
-            webhook.send(f"Esp Trigger ")
-
+            now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            webhook.send(f"[{now}] ESP motion detected!")
             return JsonResponse({"status": "ok"})
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
