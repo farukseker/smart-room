@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import AccessesRequestView
+from .views import AccessesRequestView, send_discord
 
 
 urlpatterns = [
