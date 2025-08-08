@@ -38,7 +38,6 @@ CHANNEL_LAYERS = {
 
 ## log
 
-"""
 
 LOGGING = {
     'version': 1,
@@ -78,7 +77,7 @@ sentry_sdk.init(
     send_default_pii=True
 )
 
-"""
+
 
 LOGIN_URL = 'admin/login'
 LOGIN_REDIRECT_URL = '/'
