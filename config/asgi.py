@@ -8,7 +8,7 @@ from django.core.asgi import get_asgi_application
 
 # Ortam değişkenini belirterek Django ayarlarını yükle.
 # Bu, Uvicorn'un ayarlar dosyanızı bulmasını sağlar.
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.develop")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.product")
 
 # Django'nun varsayılan ASGI uygulamasını başlat.
 django_asgi_app = get_asgi_application()
