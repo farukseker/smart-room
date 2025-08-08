@@ -1,13 +1,15 @@
+from datetime import timedelta
 from .base_settings import *
 
 
 CSRF_TRUSTED_ORIGINS = ['https://*.up.railway.app',
                         "https://smart-room-production.up.railway.app/",
-                        'https://smart.farukseker.gen.tr/',
+                        'https://smart.farukseker.com.tr'
                         'https://smart.farukseker.com.tr/',
-                        'https://smartapp.farukseker.gen.tr/',
+                        'https://smartapp.farukseker.com.tr/',
+                        'https://smartapp.farukseker.com.tr',
                         'https://24m9nvnv.up.railway.app',
-                        'https://smart.farukseker.gen.tr']
+                        ]
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -88,3 +90,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 #     'https://chipper-beijinho-7e220b.netlify.app/'
 # ]
 
+SIMPLE_JWT: dict = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
+}
