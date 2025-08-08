@@ -66,9 +66,6 @@ def mindex(request):
 
 from esp.views import EspPage, test_eensor
 
-def trigger_error(request):
-    division_by_zero = 1 / 0
-
 
 urlpatterns = [
     path('admin/login/', auth_view.CustomAdminLogin.as_view(), name='login'),
@@ -79,7 +76,4 @@ urlpatterns = [
     path('sensor/', test_eensor),
     path('mail/', mindex),
     path('api/', include('api.urls')),
-
-    path('sentry-debug/', trigger_error),
-
 ]
