@@ -1,11 +1,33 @@
-import json
-import redis
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
+# esp/signals.py
+
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from esp.models import Key
-from esp.models import ESP
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+import json
+from .models import ESP, Key
+
+
+@receiver(post_save, sender=ESP)
+def send_esp_data_update(sender, instance, **kwargs):
+    """
+    ESP modelinde bir değişiklik olduğunda, bunu WebSocket üzerinden ilgili gruba gönderir.
+    """
+    channel_layer = get_channel_layer()
+    group_name = "esp_data"
+
+    # WebSocket mesajını oluştur
+    message = {
+        "type": "esp_data_message",
+        "message": json.dumps({
+            "esp_id": instance.id,
+            "status": instance.status,
+            "user_id": str(instance.user.id) if instance.user else None
+        })
+    }
+
+    # Mesajı eş zamanlı (sync) olarak gönder
+    async_to_sync(channel_layer.group_send)(group_name, message)
 
 
 @receiver(post_save, sender=Key)
@@ -14,7 +36,7 @@ def send_message_to_socket(sender, instance, **kwargs):
     channel_layer = get_channel_layer()
 
     if not is_create_signal and not instance.last_updater_is_esp:
-        print(f"signal if block :to : {instance.owner_esp}" )
+        print(f"signal if block :to : {instance.owner_esp}")
         try:
             async_to_sync(channel_layer.group_send)(
                 "communication_%s" % instance.owner_esp.esp_id,
