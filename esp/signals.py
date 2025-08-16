@@ -13,6 +13,7 @@ def send_esp_data_update(sender, instance, **kwargs):
     """
     ESP modelinde bir değişiklik olduğunda, bunu WebSocket üzerinden ilgili gruba gönderir.
     """
+    return
     channel_layer = get_channel_layer()
     group_name = "esp_data"
 
