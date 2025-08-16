@@ -20,7 +20,7 @@ def send_esp_data_update(sender, instance, **kwargs):
     message = {
         "type": "esp_data_message",
         "message": json.dumps({
-            "esp_id": instance.id,
+            "esp_id": instance.esp_id,
             "status": instance.status,
             "user_id": str(instance.user.id) if instance.user else None
         })
