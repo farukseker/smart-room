@@ -1,7 +1,7 @@
 from datetime import timedelta
 from .base_settings import *
 
-DEBUG = True
+DEBUG = False
 CSRF_TRUSTED_ORIGINS = ['https://*.up.railway.app',
                         "https://smart-room-production.up.railway.app/",
                         'https://smart.farukseker.com.tr'
