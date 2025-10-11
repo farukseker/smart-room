@@ -23,6 +23,14 @@ class Key(models.Model):
         self.last_updater_is_esp = master
         self.current = bool(current)
         self.save()
+    
+    @classmethod
+    def bulk_update_status(cls, esp_device, status: bool):
+        """Bulk update all keys for an ESP device"""
+        return cls.objects.filter(owner_esp=esp_device).update(
+            last_updater_is_esp=False,
+            current=status
+        )
 
     # Convert the time argument to a datetime object
     def now_in_time_range(self):

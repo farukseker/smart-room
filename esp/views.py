@@ -6,13 +6,10 @@ from esp.models import ESP, Key
 
 class EspPage(View):
     def get(self, request, *args, **kwargs):
-        # esp_list = ESP.objects.filter(user=request.user)
-        esp_list: list = []
+        # Optimized query with prefetch_related to avoid N+1 queries
+        esp_list = ESP.objects.filter(user=request.user).prefetch_related('keys').order_by('name')
 
-        for esp in ESP.objects.filter(user=request.user).order_by('name'):
-            esp_list.append(esp)
-
-        if esp_list:
+        if esp_list.exists():
             return render(request, template_name="view_with_socket.html", context={
                 "esp_list": esp_list
             })

@@ -21,7 +21,8 @@ DATABASES = {
         'USER': env('PGUSER'),
         'PASSWORD': env('PGPASSWORD'),
         'HOST': env('PGHOST'),
-        'PORT': env('PGPORT')
+        'PORT': env('PGPORT'),
+        **DATABASE_OPTIMIZATION,  # Apply database optimization settings
     }
 }
 
@@ -41,20 +42,23 @@ CHANNEL_LAYERS = {
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
-SENTRY_DSN = env("SENTRY_DSN")
-sentry_sdk.init(
-    dsn=SENTRY_DSN,
-    integrations=[DjangoIntegration(),],
-
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # We recommend adjusting this value in production.
-    # traces_sample_rate=1.0,
-
-    # If you wish to associate users to errors (assuming you are using
-    # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True
-)
+SENTRY_DSN = env("SENTRY_DSN", default="")
+if SENTRY_DSN:  # Only initialize Sentry if DSN is provided
+    try:
+        sentry_sdk.init(
+            dsn=SENTRY_DSN,
+            integrations=[DjangoIntegration(),],
+            # Set traces_sample_rate to 1.0 to capture 100%
+            # of transactions for performance monitoring.
+            # We recommend adjusting this value in production.
+            # traces_sample_rate=1.0,
+            # If you wish to associate users to errors (assuming you are using
+            # django.contrib.auth) you may enable sending PII data.
+            send_default_pii=True
+        )
+    except Exception as e:
+        print(f"Sentry initialization failed: {e}")
+        # Continue without Sentry if initialization fails
 
 
 LOGIN_URL = 'admin/login'

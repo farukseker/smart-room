@@ -160,3 +160,59 @@ EMAIL_USE_TLS = True
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
+# Cache Configuration
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': env('REDIS_CHANEL_URL', default='redis://127.0.0.1:6379/1'),
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'KEY_PREFIX': 'smart_room',
+        'TIMEOUT': 300,  # 5 minutes
+    }
+}
+
+# Session Configuration
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
+SESSION_COOKIE_AGE = 3600  # 1 hour
+
+# Database Connection Pooling
+# Note: DATABASES will be defined in develop.py and product.py
+# This is a placeholder for database optimization settings
+DATABASE_OPTIMIZATION = {
+    'CONN_MAX_AGE': 60,  # Keep connections alive for 1 minute
+    'OPTIONS': {
+        'MAX_CONNS': 20,
+        'MIN_CONNS': 5,
+    }
+}
+
+# Memory Management Settings
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB
+
+# Query Optimization
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Logging Configuration for Memory Monitoring
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs' / 'django.log',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+

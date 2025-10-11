@@ -12,7 +12,8 @@ class ESPListView(ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return ESP.objects.filter(user=user)
+        # Optimized query with prefetch_related to avoid N+1 queries
+        return ESP.objects.filter(user=user).prefetch_related('keys')
 
 
 class KeyView(UpdateAPIView):

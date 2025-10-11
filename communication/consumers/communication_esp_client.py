@@ -34,9 +34,8 @@ class CommunicationEspClientConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def set_sync_key_status(self, esp_device: ESP):
-        for key in esp_device.get_keys():
-            key.last_updater_is_esp = False
-            key.save()
+        # Bulk update instead of individual saves
+        esp_device.keys.all().update(last_updater_is_esp=False)
 
     @database_sync_to_async
     def set_esp_connect_status(self, device, status: bool):
